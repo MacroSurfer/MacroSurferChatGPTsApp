@@ -1,0 +1,65 @@
+# ref1: https://offbeattesting.com/2020/12/01/getting-started-with-the-open-api-specification/
+# ref2: https://medium.com/@briannqc/backend-101-a-guide-to-openapi-and-api-first-approach-c25297226905
+# ref3: https://yaml.org/spec/1.2-old/spec.html#id2759572
+# ref4: https://yaml.org
+# ref5: https://beeceptor.com/docs/concepts/data-exchange-formats/#:~:text=Data%20serialization%20is%20a%20critical,CSV%2C%20ProtoBuf%2C%20and%20MessagePack.
+
+openapi: 3.1.0
+info:
+  title: "Get economic calendar in date range"
+  version: "1.0.0"
+
+servers:
+  - url: "https://geteventsindaterange-rozzd6eg5q-uc.a.run.app"
+
+paths:
+  /getEventsInDateRange:
+    get:
+      operationId: "getEventsInDateRange"
+      summary: "Fetch events in a date range"
+      description: "Retrieves events for a specified start date, end date, and country."
+      parameters:
+        - name: startDate
+          in: query
+          required: true
+          description: "Start date for the range (format: YYYY-MM-DD)"
+          schema:
+            type: string
+        - name: endDate
+          in: query
+          required: true
+          description: "End date for the range (format: YYYY-MM-DD)"
+          schema:
+            type: string
+        - name: country
+          in: query
+          required: true
+          description: "Country code for which events are fetched (default: US)"
+          schema:
+            type: string
+            default: "US"
+      responses:
+        '200':
+          description: "A list of events"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        date:
+                          type: string
+                        location:
+                          type: string
+        '400':
+          description: "Invalid input or missing required parameters"
+        '500':
+          description: "Internal server error"

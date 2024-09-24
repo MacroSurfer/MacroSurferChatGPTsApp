@@ -1,0 +1,53 @@
+openapi: 3.1.0
+info:
+  title: "Get economic historical values for a event"
+  version: 1.0.0
+
+servers:
+  - url: "https://gethistoryforevent-rozzd6eg5q-uc.a.run.app"
+
+paths:
+  /getHistoryForEvent:
+    get:
+      summary: Fetch historical values of a event in a country
+      description: Retrieve historical values of a event for a specified country
+      operationId: "getHistoryForEvent"
+      parameters:
+        - name: country
+          in: query
+          required: true
+          description: "Country code for which events are fetched (default: US)"
+          schema:
+            type: string
+            default: US
+        - name: event
+          in: query
+          required: true
+          description: "Name of event such as CPI, PMI,  1-Year T-Bill, 10-Year Bond Auction, 10-Year Note Auction, Unemployment Rate, Initial Jobless Claims, Continuing Jobless Claims, Consumer Credit, Consumer Confidence, Michigan Consumer Sentiment, GDP, etc"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: "A list of events"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  events:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        date:
+                          type: string
+                        location:
+                          type: string
+        '400':
+          description: Invalid input or missing required parameters
+        '500':
+          description: Internal server error
